@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Xiaoker">
+
+
+
+
+
+<title>代码随想录第十三天｜239. 滑动窗口最大值、347.前 K 个高频元素 | Ker的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Ker 的博客</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Ker 的博客</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">代码随想录第十三天｜239. 滑动窗口最大值、347.前 K 个高频元素</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Xiaoker</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 9, 2024&nbsp;&nbsp;11:00:59</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="239-滑动窗口最大值"><a href="#239-滑动窗口最大值" class="headerlink" title="239. 滑动窗口最大值"></a>239. 滑动窗口最大值</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/submissions/524263352/">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：求出长度为k的滑动窗口中最大的元素，并存入n-k+1长度的数组中。</p>
+<p><em><strong>思考</strong></em>：暴力解法比较容易，但会超时。学习了单调队列的方法，主要是对deque不是很熟悉，depue双端队列，对队列的头first和尾last都可以进行加入删除查看值的操作，十分的方便。</p>
+<p><em><strong>算法思路</strong></em>：创建一个双端队列作为单调队列，队列存储元素下标。单调队列保证队列从头到尾数字从大到小，不断遍历数组元素，并将下标放入队列。当队头元素超出滑动窗口范围时，直接出队，不断删除队尾比新加入元素小的元素，保证队列从头到尾数字从大到小，最后将每次的队头加入数组。</p>
+<p><em><strong>时间复杂度</strong></em> ：O(n) （每个元素最多被加入或推出一次）</p>
+<p><em><strong>空间复杂度</strong></em> ：O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayDeque;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">      <span class="comment">//定义一个双端队列作为单调队列，队列存储元素下标</span></span><br><span class="line">        ArrayDeque&lt;Integer&gt; deque = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line">      <span class="comment">//定义输出的数组</span></span><br><span class="line">        <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length - k + <span class="number">1</span>];</span><br><span class="line">      <span class="comment">//用于遍历数组</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">      <span class="comment">//遍历nums元素</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">//如果队头元素小于等于i - k，说明该元素已经超出了k个以内的范围，或者其是k个范围内的第一个元素，直接将其推出（因为遍历到nums[i]时，本次循环就要添加nums[i]了，所以即使当前元素是k个范围内的第一个元素，也要推出）</span></span><br><span class="line">            <span class="keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt;= i - k)&#123;</span><br><span class="line">                deque.removeFirst();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//不断删除队尾比新加入元素小的元素，保证队列从头到尾数字从大到小</span></span><br><span class="line">            <span class="keyword">while</span> (!deque.isEmpty() &amp;&amp; nums[i] &gt; nums[deque.peekLast()])&#123;</span><br><span class="line">                deque.removeLast();</span><br><span class="line">            &#125;</span><br><span class="line">          </span><br><span class="line">            <span class="comment">//添加新元素的下标</span></span><br><span class="line">            deque.offer(i);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 因为单调，当i增长到符合第一个k范围的时候，每滑动一步都将队列头节点放入结果就行了</span></span><br><span class="line">            <span class="keyword">if</span>(i &gt;= k - <span class="number">1</span>)&#123;</span><br><span class="line">                res[idx++] = nums[deque.peek()];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="347-前-K-个高频元素"><a href="#347-前-K-个高频元素" class="headerlink" title="347.前 K 个高频元素"></a>347.前 K 个高频元素</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/submissions/524463640/">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：获得数组中前k个高频的元素。</p>
+<p><em><strong>思考</strong></em>：想到用map。然后学到了一些java语法：</p>
+<ul>
+<li><code>(pair1, pair2) -&gt; pair1[1] - pair2[1]</code>:  lambda 表达式，用于比较两个整型数组。lambda 表达式定义了比较器，指定了数组按照第二个元素（索引为 1 的元素）升序排序。具体来说，<code>pair1[1] - pair2[1]</code> 表示比较两个数组的第二个元素的大小差值，如果差值为负数，则说明 <code>pair1</code> 应该排在 <code>pair2</code> 前面；如果差值为正数，则说明 <code>pair1</code> 应该排在 <code>pair2</code> 后面；如果差值为零，则说明它们相等，排序不变。</li>
+</ul>
+<p><em><strong>算法思路</strong></em>：用map遍历数组，key为数组元素，value为元素出现次数。然后不断将map元素传入优先级队列，取队列的前k个元素的value存入数组。</p>
+<p><em><strong>时间复杂度</strong></em> ：O(n) </p>
+<p><em><strong>空间复杂度</strong></em> ：O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] topKFrequent(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">      	<span class="comment">//将元素传入map，统计出现次数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : nums) &#123;</span><br><span class="line">            <span class="comment">//getOrDefault用于获取指定键对应的值，如果键不存在，则返回指定的默认值0</span></span><br><span class="line">            map.put(num, map.getOrDefault(num, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      	<span class="comment">//创建优先级队列，元素整数型数组，优先级队列会根据数组中的第二个元素的大小自动进行排序</span></span><br><span class="line">        PriorityQueue&lt;<span class="type">int</span>[]&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((pair1, pair2) -&gt; pair1[<span class="number">1</span>] - pair2[<span class="number">1</span>]);</span><br><span class="line">      	<span class="comment">//遍历map，同时遍历键和值，可以使用entrySet()方法来获取Map.Entry对象的集合</span></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : map.entrySet()) &#123;</span><br><span class="line">          <span class="comment">//分别将map的key和value存入int型数组</span></span><br><span class="line">            pq.add(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;entry.getKey(), entry.getValue()&#125;);</span><br><span class="line">          <span class="comment">//取前k个</span></span><br><span class="line">            <span class="keyword">if</span> (pq.size() &gt; k)&#123;</span><br><span class="line">                pq.poll();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line">        <span class="type">int</span>[] a = <span class="keyword">new</span> <span class="title class_">int</span>[k];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> k - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">          <span class="comment">//将key存入数组</span></span><br><span class="line">            a[i] = pq.poll()[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>这两个题写完了很久才写文档，发现忘记的很快，还是得保持记录。主要是对deque和PriorityQueue的不熟悉。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Xiaoker</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://kerkerxiao.github.io/2024/07/09/%E7%AE%97%E6%B3%95day13/">https://kerkerxiao.github.io/2024/07/09/%E7%AE%97%E6%B3%95day13/</a></span>
+                    </p>
+                
+                
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%8A%80%E6%9C%AF/"># 技术</a>
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/07/09/%E7%AE%97%E6%B3%95day15/">代码随想录算法训练营第十五天｜102. 二叉树的层序遍历、226.翻转二叉树、101. 对称二叉树</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/09/%E7%AE%97%E6%B3%95day16/">代码随想录算法训练营第十六天｜104.二叉树的最大深度、559.n叉树的最大深度、111.二叉树的最小深度、222.完全二叉树的节点个数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ker | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

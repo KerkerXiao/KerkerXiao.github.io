@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Xiaoker">
+
+
+
+
+
+<title>代码随想录算法训练营第八天｜344.反转字符串、541. 反转字符串II、卡码网：54.替换数字、51.翻转字符串里的单词、卡码网：55.右旋转字符串 | Ker的博客</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Ker 的博客</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Ker 的博客</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">代码随想录算法训练营第八天｜344.反转字符串、541. 反转字符串II、卡码网：54.替换数字、51.翻转字符串里的单词、卡码网：55.右旋转字符串</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Xiaoker</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 9, 2024&nbsp;&nbsp;11:00:59</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="344-反转字符串"><a href="#344-反转字符串" class="headerlink" title="344.反转字符串"></a>344.反转字符串</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string/submissions/522073851/">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：将字符串数组反转并存在原数组中。</p>
+<p><em><strong>思考</strong></em>：左右两个指针遍历遍历一遍。</p>
+<p><em><strong>算法思路</strong></em>：将左右指针分别指向数组头和尾，不断将头尾字符交换，直到左右指针相等。</p>
+<p><em><strong>时间复杂度</strong></em> ：O(n) </p>
+<p><em><strong>空间复杂度</strong></em> ：O(1)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">reverseString</span><span class="params">(<span class="type">char</span>[] s)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>, right = s.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right)&#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">a</span> <span class="operator">=</span> s[left];</span><br><span class="line">            s[left] = s[right];</span><br><span class="line">            s[right] = a;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="541-反转字符串II"><a href="#541-反转字符串II" class="headerlink" title="541. 反转字符串II"></a>541. 反转字符串II</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string-ii/submissions/522217668/">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：将每2k个字符串中的前k个反转，若剩余不足k个则直接将剩余反转，若剩余大于k小于2k个，则将这k个反转。</p>
+<p><em><strong>思考</strong></em>：java中的字符串String不能改写,只能读取，很多字符的方法都没有，本体选择将字符串存入StringBuilder进程处理。</p>
+<ul>
+<li><p><strong>String（字符串）</strong>：是 Java 中最常用的字符串类型，它是不可变的，一旦创建就不能修改。字符串的字面值可以用双引号引起来，例如：”Hello, World!”。</p>
+</li>
+<li><p><strong>StringBuffer（字符串缓冲区）</strong>：是一个可变的字符串类型，适用于多线程环境下的字符串操作。它的操作是同步的，可以保证线程安全。StringBuilder 是其非线程安全的版本。</p>
+</li>
+<li><p><strong>StringBuilder（字符串生成器）</strong>：与 StringBuffer 类似，也是一个可变的字符串类型，但不保证线程安全。在单线程环境下，StringBuilder 的性能比 StringBuffer 更高。</p>
+</li>
+</ul>
+<p><em><strong>算法思路</strong></em>：依次遍历每个2k，左右指针分别指向2k中的第一个和第k个，翻转前k个字符。如果right指针越界，则right直接指向字符串末尾。</p>
+<p><em><strong>时间复杂度</strong></em>： O(n) </p>
+<p><em><strong>空间复杂度</strong></em>： O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">reverseStr</span><span class="params">(String s, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">      <span class="comment">//定义一个可变字符串</span></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">newString</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(s);</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; s.length())&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> i;</span><br><span class="line">            <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> i + k -<span class="number">1</span>;</span><br><span class="line">          <span class="comment">//如果r越界，直接指向字符串尾</span></span><br><span class="line">            <span class="keyword">if</span> (right &gt; s.length() - <span class="number">1</span>)&#123;</span><br><span class="line">                right = s.length() - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (left &lt; right)&#123;</span><br><span class="line">                <span class="comment">// 将左右两个字符进行交换</span></span><br><span class="line">                <span class="type">char</span> <span class="variable">temp</span> <span class="operator">=</span> newString.charAt(left);</span><br><span class="line">                newString.setCharAt(left, newString.charAt(right));</span><br><span class="line">                newString.setCharAt(right, temp);</span><br><span class="line">                right--;</span><br><span class="line">                left++;</span><br><span class="line">            &#125;</span><br><span class="line">          <span class="comment">//每次循环处理2k个字符</span></span><br><span class="line">            i += <span class="number">2</span> * k;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(newString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="卡码网：54-替换数字"><a href="#卡码网：54-替换数字" class="headerlink" title="卡码网：54.替换数字"></a>卡码网：54.替换数字</h2><p><a target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1064">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：给定含有小写字母和数字的字符串，将数字变为”number”。</p>
+<p><em><strong>思考</strong></em>：卡码网需要自己写输入输出，Main文件需要创建同名的Main类，然后接口main是程序运行的主函数。</p>
+<p><em><strong>算法思路</strong></em>：创建空的StringBuilder，遍历输入的s，如果为数字就在StringBuilder中加入字符串”number”，如果为字母就直接加入StringBuilder，直到遍历完所有字符。</p>
+<p><em><strong>时间复杂度</strong></em> O(n) </p>
+<p><em><strong>空间复杂度</strong></em> O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      <span class="comment">//输入一个字符串</span></span><br><span class="line">        <span class="type">Scanner</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in);</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> in.nextLine();</span><br><span class="line">      <span class="comment">//创建空的StringBuilder</span></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">newString</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">      <span class="comment">//遍历s，如果为数字就在StringBuilder加入“number”，如果为字母就直接加入StringBuilder</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span> (Character.isDigit(c)) &#123;</span><br><span class="line">                newString.append(<span class="string">&quot;number&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                newString.append(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(newString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="51-翻转字符串里的单词"><a href="#51-翻转字符串里的单词" class="headerlink" title="51.翻转字符串里的单词"></a>51.翻转字符串里的单词</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-words-in-a-string/description/">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：将字符串里的单词翻转，翻转后单词间存在空格，字符串首位不存在空格。</p>
+<p><em><strong>思考</strong></em>：看似复杂，实则需要注意的点确实很多，要不断考虑不要溢出。总的来说就是找到每个单词的首位，再存入新的字符串。</p>
+<p><em><strong>算法思路</strong></em>：创建指针l和r，不断遍历直到指向单词的末尾，再让l指向单词第一个字母，将l到r的字母加入新字符串，再加入空格后，l和r指向单词的前一个空格，以便于下一次循环。不断循环，直到遍历完字符串。</p>
+<p><em><strong>时间复杂度</strong></em> O(n) </p>
+<p><em><strong>空间复杂度</strong></em> O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">reverseWords</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">newString</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">//应对单个字母的字符串“a”</span></span><br><span class="line">        <span class="keyword">if</span>(s.length() == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> s.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> s.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (right &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">//如果l和r都指向空格，则同时向左移动，直到不为空格，且不要溢出</span></span><br><span class="line">            <span class="keyword">while</span> (right &gt; <span class="number">0</span> &amp;&amp; s.charAt(right) == <span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">                right--;</span><br><span class="line">                left--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//此时left和right都指向单词的最后一个字母，循环结束时，left指向单词第一个字母，注意不要溢出</span></span><br><span class="line">            <span class="keyword">while</span> (left &gt; <span class="number">0</span> &amp;&amp; s.charAt(left - <span class="number">1</span>) != <span class="string">&#x27; &#x27;</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (left != <span class="number">0</span>)&#123;</span><br><span class="line">                    left--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//将l到r的字母加入，因为append是加入左闭右开的数字，所以右面填入r+1</span></span><br><span class="line">            newString.append(s.substring(left, right + <span class="number">1</span>));</span><br><span class="line">            <span class="comment">//单词之间添加空格</span></span><br><span class="line">            newString.append(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            <span class="comment">//left指向左面的空格</span></span><br><span class="line">            left--;</span><br><span class="line">            right = left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (newString.charAt(newString.length() - <span class="number">1</span>) == <span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">            newString.deleteCharAt(newString.length() - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(newString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="卡码网：55-右旋转字符串"><a href="#卡码网：55-右旋转字符串" class="headerlink" title="卡码网：55.右旋转字符串"></a>卡码网：55.右旋转字符串</h2><p><a target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1065">题目链接</a></p>
+<p><em><strong>问题简述</strong></em>：输入字符串s和数字n，将字符串后n位放到字符串最前面。</p>
+<p><em><strong>思考</strong></em>：之前复习数据结构的时候见过，觉得思想很巧妙。这里没有用StringBuilder自带的reverse()方法，因为reverse和系统方法一样，一般都是左闭右开，好像老是溢出，左右自己写了一个左闭右闭的方法。同时选择字符串数组来更方便的处理。</p>
+<p><em><strong>算法思路</strong></em>：将字符串全部翻转，再翻转前n位，再将剩下的字符翻转。</p>
+<p><em><strong>时间复杂度</strong></em> O(n) </p>
+<p><em><strong>空间复杂度</strong></em> O(n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Scanner</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in);</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> in.nextInt();</span><br><span class="line">        in.nextLine();  <span class="comment">// 消耗换行符</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> in.nextLine(); </span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> s.length();  <span class="comment">//获取字符串长度</span></span><br><span class="line">      <span class="comment">//用数组进行存储</span></span><br><span class="line">        <span class="type">char</span>[] chars = s.toCharArray();</span><br><span class="line">        reverseString(chars, <span class="number">0</span>, len - <span class="number">1</span>);</span><br><span class="line">        reverseString(chars, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">        reverseString(chars, n, len - <span class="number">1</span>);</span><br><span class="line">        System.out.println(chars);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">reverseString</span><span class="params">(<span class="type">char</span>[] s, <span class="type">int</span> left, <span class="type">int</span> right)</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right)&#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">a</span> <span class="operator">=</span> s[left];</span><br><span class="line">            s[left] = s[right];</span><br><span class="line">            s[right] = a;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>字符串不是很熟练，很多自带的方法感觉不是很会，因为没系统的看java基础，比如toString啥的我还没太明白。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Xiaoker</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://kerkerxiao.github.io/2024/07/09/%E7%AE%97%E6%B3%95day8/">https://kerkerxiao.github.io/2024/07/09/%E7%AE%97%E6%B3%95day8/</a></span>
+                    </p>
+                
+                
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%8A%80%E6%9C%AF/"># 技术</a>
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/07/09/%E7%AE%97%E6%B3%95day7/">代码随想录算法训练营第七天｜454.四数相加II 、383. 赎金信 、15. 三数之和、18. 四数之和</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/09/%E7%AE%97%E6%B3%95day9/">代码随想录算法训练营第九天|28. 实现 strStr()、459.重复的子字符串</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ker | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
